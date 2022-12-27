@@ -1,14 +1,27 @@
 function setup() {
     const canvas = document.getElementById("canvas");
+    let console_output = document.getElementById("console-p");
 
     if (canvas.getContext) {
         canvas.width = 600;
         canvas.height = 600;
 
-        draw();
+        try {
+            draw();
+        } catch (error) {
+            console_output.style.color = '#ed2f2f';
+            console_output.innerHTML = "Uh oh. Looks like there's a problem with the code.\nPlease paste the following line(s) in a pull request:\n\n";
+            console_output.innerHTML += "error message:  " + error.message + "\n";
+            console_output.innerHTML += "error name:     " + error.name.message;
+        }
     } else {
         if (canvas.outerHTML) {
-            canvas.outerHTML = `<h1>There was an issue with canvas.</h1>`;
+            try {
+                canvas.outerHTML = `<h1>There was an issue with canvas.</h1>`;
+            } finally {
+                console_output.style.color = '#ed2f2f';
+                console_output.innerHTML = "Uh oh. Looks like there's a problem with canvas.";
+            }
         }
     }
 }
