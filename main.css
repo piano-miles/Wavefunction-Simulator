@@ -1,0 +1,49 @@
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: #3f424a;
+    color: #fff;
+    padding-left: 16px;
+    padding-right: 16px
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-row {
+    flex-direction: row;
+    flex-wrap: wrap
+}
+
+.flex-column {
+    flex-direction: column
+}
+
+.flex-child {
+    margin: 4px
+}
+
+#canvas-container {
+    width: 600px;
+    height: 600px
+}
+
+#canvas {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border: 2px solid #a0a0a0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    border-radius: 16px
+}
+
+#title {
+    width: 600px;
+    text-align: center;
+}
+
+#parameters {
+    margin-left: 16px;
+}
