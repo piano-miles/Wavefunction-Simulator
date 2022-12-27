@@ -1,6 +1,4 @@
 function setup() {
-    console.log("setup");
-
     const canvas = document.getElementById("canvas");
 
     if (canvas.getContext) {
@@ -26,6 +24,7 @@ function draw() {
     //
     // Function definitions
     //
+    // Cricle object
     function circle(x, y, r, c) {
         this.x = x;
         this.y = y;
@@ -52,28 +51,58 @@ function draw() {
         }
     }
 
+    function complex_exponential(phase, amplitude) {
+        return [0,0];
+        //return [Math.cos(phase) * amplitude, Math.sin(phase) * amplitude];
+    }
+
+    function renderPath(verts) {
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#FF0000";
+
+        ctx.beginPath();
+        ctx.moveTo(0, 300-verts[0][0]);
+        for (let i = 1; i < verts.length; i++) {
+            let y = 300-verts[i][0];
+            ctx.lineTo(i, y);
+        }
+        ctx.stroke();
+    }
+
     //
     // Draw
     //
+    // Init
     const balls = [];
-    for (let i = 0; i < 20; i++) {
-        let r = Math.floor(Math.random() * 30) + 15;
-        let x = Math.random() * (canvas.width - r * 2) + r;
-        let y = Math.random() * (canvas.height - r * 2) + r;
-        let c = 'red';
-        balls.push(new circle(x, y, r, c));
+    let r = Math.floor(Math.random() * 30) + 15;
+    let x = 300;
+    let y = 300;
+    let c = 'red';
+    balls.push(new circle(x, y, r, c));
+
+    let wfunc = []; //Wave function
+    let wf2 = []; //Square density
+    for (let i = 0; i < 600; i++) {
+        let j = (i - 300) * 0.01;
+        let amplitude = complex_exponential(j, Math.exp(-j * j));
+        wfunc.push(amplitude); // Complex number as [r, i]
     }
 
-    function update() {
+    function update() { // Loop each frame
+        // Clear screen
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-
-        for (let i = 0; i < balls.length; i++) {
+        // Update each ball
+        /*for (let i = 0; i < balls.length; i++) {
             balls[i].animate();
-        }
+        }*/
 
+        renderPath(wfunc);
+
+        // Loop
         requestAnimationFrame(update);
     }
 
+    // Begin loop
     update();
 }

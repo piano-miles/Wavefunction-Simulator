@@ -7,7 +7,7 @@ body {
 }
 
 .flex-container {
-    display: flex;
+    display: flex
 }
 
 .flex-row {
@@ -41,9 +41,9 @@ body {
 
 #title {
     width: 600px;
-    text-align: center;
+    text-align: center
 }
 
 #parameters {
-    margin-left: 16px;
+    margin-left: 16px
 }
