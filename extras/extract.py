@@ -1,12 +1,18 @@
 # Just a little Python script to extract the javascript math functions from a table on a website.
 
-str = '<table class="alt"> <tbody><tr> <th>Methods</th> <th>Description</th> </tr> <tr> <td><a href="javascript-math-abs-method">abs()</a></td> <td>It returns the absolute value of the given number.</td> </tr> <tr> <td><a href="javascript-math-acos-method">acos()</a></td> <td>It returns the arccosine of the given number in radians.</td> </tr> <tr> <td><a href="javascript-math-asin-method">asin()</a></td> <td>It returns the arcsine of the given number in radians.</td> </tr> <tr> <td><a href="javascript-math-atan-method">atan()</a></td> <td>It returns the arc-tangent of the given number in radians.</td> </tr> <tr> <td><a href="javascript-math-cbrt-method">cbrt()</a></td> <td>It returns the cube root of the given number.</td> </tr> <tr> <td><a href="javascript-math-ceil-method">ceil()</a></td> <td>It returns a smallest integer value, greater than or equal to the given number.</td> </tr> <tr> <td><a href="javascript-math-cos-method">cos()</a></td> <td>It returns the cosine of the given number.</td> </tr> <tr> <td><a href="javascript-math-cosh-method">cosh()</a></td> <td>It returns the hyperbolic cosine of the given number.</td> </tr> <tr> <td><a href="javascript-math-exp-method">exp()</a></td> <td>It returns the exponential form of the given number.</td> </tr> <tr> <td><a href="javascript-math-floor-method">floor()</a></td> <td>It returns largest integer value, lower than or equal to the given number.</td> </tr> <tr> <td><a href="javascript-math-hypot-method">hypot()</a></td> <td>It returns square root of sum of the squares of given numbers.</td> </tr> <tr> <td><a href="javascript-math-log-method">log()</a></td> <td>It returns natural logarithm of a number.</td> </tr> <tr> <td><a href="javascript-math-max-method">max()</a></td> <td>It returns maximum value of the given numbers.</td> </tr> <tr> <td><a href="javascript-math-min-method">min()</a></td> <td>It returns minimum value of the given numbers.</td> </tr> <tr> <td><a href="javascript-math-pow-method">pow()</a></td> <td>It returns value of base to the power of exponent.</td> </tr> <tr> <td><a href="javascript-math-random-method">random()</a></td> <td>It returns random number between 0 (inclusive) and 1 (exclusive).</td> </tr> <tr> <td><a href="javascript-math-round-method">round()</a></td> <td>It returns closest integer value of the given number.</td> </tr> <tr> <td><a href="javascript-math-sign-method">sign()</a></td> <td>It returns the sign of the given number</td> </tr> <tr> <td><a href="javascript-math-sin-method">sin()</a></td> <td>It returns the sine of the given number.</td> </tr> <tr> <td><a href="javascript-math-sinh-method">sinh()</a></td> <td>It returns the hyperbolic sine of the given number.</td> </tr> <tr> <td><a href="javascript-math-sqrt-method">sqrt()</a></td> <td>It returns the square root of the given number</td> </tr> <tr> <td><a href="javascript-math-tan-method">tan()</a></td> <td>It returns the tangent of the given number.</td> </tr> <tr> <td><a href="javascript-math-tanh-method">tanh()</a></td> <td>It returns the hyperbolic tangent of the given number.</td> </tr> <tr> <td><a href="javascript-math-trunc-method">trunc()</a></td> <td>It returns an integer part of the given number.</td> </tr> </tbody></table>'
+import os
+
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+B = open('./math.txt', 'r')
+str = B.read()
+B.close()
 
 str = str.replace('<td><a href="javascript-math-', 'START1').replace('>', 'START2').replace('<', 'END').split('START1')
 
 A = []
-for B in str:
-    A.append(B.split('START2')[1].split('END')[0])
+for C in str:
+    A.append(C.split('START2')[1].split('END')[0])
 
 A.pop(0)
 print(A)
