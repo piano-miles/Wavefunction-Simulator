@@ -48,7 +48,8 @@ function draw() {
     //
 
     function computePotential() {
-        for (let x = 0; x < 600; x++) {
+        V = [];
+        for (let x = -300; x < 300; x++) {
             V.push(eval(Vfunc));
         }
     }
@@ -63,9 +64,12 @@ function draw() {
         ctx.lineWidth = 2;
 
         ctx.strokeStyle = "#cc5050" + alpha;
-        for (let x = 1; x < 600; x++) {
-
+        ctx.beginPath();
+        ctx.moveTo(0, 300 - V[0] * yscale);
+        for (let i = 1; i < 600; i++) {
+            ctx.lineTo(i, 300 - V[i] * yscale);
         }
+        ctx.stroke();
 
         ctx.fillStyle = "#ffffff20";
         ctx.strokeStyle = "#cccccc" + alpha;

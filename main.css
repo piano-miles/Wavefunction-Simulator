@@ -97,7 +97,7 @@ hr {
 }
 
 .input {
-    padding: 4px 8px;
+    padding: 4px 6px;
     border-color: #a0a0a0;
     border-style: solid;
     border-radius: 6px;
@@ -105,6 +105,10 @@ hr {
     background-color: #515151;
     cursor: text;
     word-wrap: break-word
+}
+
+.input:focus {
+    padding: 8px 10px;
 }
 
 .label {
