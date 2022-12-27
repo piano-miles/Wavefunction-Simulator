@@ -19,15 +19,13 @@ function draw() {
 
     ctx.globalCompositeOperation = "destination-over";
 
-    ctx.font = "48px roboto";
-
     // Constants
     const yscale = 600; // Scale values of wavefunction to fit
     const xscale = 1; //   Scale space
     const tscale = 1; //   Scale time
 
     // Functions of the math library (for V input). See extract.py for extraction method.
-    const maths = ['abs()', 'acos()', 'asin()', 'atan()', 'cbrt()', 'ceil()', 'cos()', 'cosh()', 'exp()', 'floor()', 'hypot()', 'log()', 'max()', 'min()', 'pow()', 'random()', 'round()', 'sign()', 'sin()', 'sinh()', 'sqrt()', 'tan()', 'tanh()', 'trunc()'];
+    const maths = ['abs', 'acos', 'asin', 'atan', 'cbrt', 'ceil', 'cos', 'cosh', 'exp', 'floor', 'hypot', 'log', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc'];
 
     // I/O
     let t1 = document.getElementById("t1");
@@ -56,12 +54,11 @@ function draw() {
     }
 
     function complex_exponential(phase, amplitude) {
-        //return [0,0];
         return [Math.cos(phase) * amplitude, Math.sin(phase) * amplitude];
     }
 
     function renderPath(verts, v) {
-        const alpha = "d0"; // alpha in hex
+        const alpha = "d0";
 
         ctx.lineWidth = 2;
 
@@ -227,6 +224,7 @@ function draw() {
             if (frame >= 240) frame = 0;
             init = false;
         }
+
         requestAnimationFrame(update);
     }
 

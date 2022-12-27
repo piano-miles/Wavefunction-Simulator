@@ -68,7 +68,7 @@ body {
     min-height: 600px;
     background-color: #303338;
     padding-bottom: 8px;
-    min-width: 250px;
+    min-width: 250px
 }
 
 .header {
@@ -96,7 +96,7 @@ hr {
     border-width: 2px
 }
 
-.input{
+.input {
     padding: 4px 8px;
     border-color: #a0a0a0;
     border-style: solid;
@@ -104,7 +104,7 @@ hr {
     box-shadow: 0 0 4px 0#303030 inset;
     background-color: #515151;
     cursor: text;
-    word-wrap:break-word
+    word-wrap: break-word
 }
 
 .label {
@@ -142,7 +142,7 @@ hr {
 
 #console-p {
     text-align: left;
-    word-wrap:break-word
+    word-wrap: break-word
 }
 
 #t {
