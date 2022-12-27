@@ -91,24 +91,26 @@ hr {
     margin-right: 8px
 }
 
-#update,
-.input {
-    border-width: 2px
+#update {
+    border-width: 2px;
 }
 
 .input {
-    padding: 4px 6px;
+    padding: 6px 8px;
     border-color: #a0a0a0;
     border-style: solid;
     border-radius: 6px;
     box-shadow: 0 0 4px 0#303030 inset;
     background-color: #515151;
     cursor: text;
-    word-wrap: break-word
+    word-wrap: break-word;
+    transition-duration: 500ms;
+    transition-timing-function: ease-in-out
 }
 
 .input:focus {
-    padding: 8px 10px;
+    color: rgb(187, 255, 141);
+    font-weight: 900
 }
 
 .label {
