@@ -19,24 +19,66 @@
 </head>
 
 <body onload="setup();">
-    <div id="title">
-        <h1>
-            Wavefunction Simulator
-        </h1>
-    </div>
-    <div class="flex-container flex-row">
-        <div class="flex-child" id="canvas-container" style="flex: 0 0 600px">
-            <canvas id="canvas"></canvas>
+    <div id="mainbox">
+        <div id="title">
+            <h1 class="header">
+                Wavefunction Simulator
+            </h1>
         </div>
-        <div class="flex-child" id="parameters">
-            <div class="flex-container flex-column">
-                <div class="flex-child">
-                    <h2>Parameters</h2>
-                </div>
-                <div class="flex-child">
-                    <p>V = x*x</p>
-                    <p>Another thing</p>
-                    <p>And other stuff too</p>
+        <div class="flex-container flex-row flex-center">
+            <div class="flex-child" id="canvas-container" style="flex: 0 0 600px">
+                <canvas id="canvas"></canvas>
+            </div>
+            <div class="flex-child" id="parameters-outer">
+                <div class="flex-container flex-column" id="parameters-inner">
+
+                    <div class="flex-child header parameters-div" id="parameters">
+                        <h2 class="parameters-head" id="parameters-header">Parameters</h2>
+                    </div>
+
+                    <hr>
+
+                    <div class="flex-child parameters-div" id="inputs">
+                        <h3 class="parameters-head">Inputs</h3>
+                        <p class="parameters-text" id="V">V = 0</p>
+                        <p class="parameters-text" id="substeps">Substeps = 100</p>
+                        <p>
+                        <pre class="parameters-text" id="subrec">(reccomended substeps: )</pre>
+                        </p>
+                    </div>
+
+                    <hr>
+
+                    <div class="flex-child parameters-div" id="outputs">
+                        <div class="parameter-group">
+                            <h3 class="parameters-head">States</h3>
+                            <p>
+                            <pre class="parameters-text" id="t">t = </pre>
+                            </p>
+                        </div>
+
+                        <hr>
+
+                        <div class="parameter-group">
+                            <h3 class="parameters-head">Computation Breakdown</h3>
+                            <p>
+                            <pre class="parameters-text" id="t1">Normalization (ms):  </pre>
+                            </p>
+                            <p>
+                            <pre class="parameters-text" id="t2">Render time   (ms):  </pre>
+                            </p>
+                        </div>
+
+                        <hr>
+
+                        <div class="parameter-group">
+                            <h3 class="parameters-head">Other</h3>
+                            <p>
+                            <pre class="parameters-text" id="fps">FPS:  </pre>
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

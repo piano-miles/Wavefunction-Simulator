@@ -10,6 +10,10 @@ body {
     display: flex
 }
 
+.flex-center {
+    justify-content: center;
+}
+
 .flex-row {
     flex-direction: row;
     flex-wrap: wrap
@@ -25,7 +29,9 @@ body {
 
 #canvas-container {
     width: 600px;
-    height: 600px
+    height: 600px;
+    margin-left: 8px;
+    margin-right: 8px;
 }
 
 #canvas {
@@ -41,9 +47,44 @@ body {
 
 #title {
     width: 600px;
-    text-align: center
+    margin: auto;
 }
 
-#parameters {
-    margin-left: 16px
+#parameters-outer {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+#parameters-inner {
+    border: 2px solid #a0a0a0;
+    border-radius: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    min-height: 600px;
+}
+
+.header {
+    text-align: center;
+}
+
+.parameters-text {
+    margin: 8px;
+    margin-left: 32px;
+    margin-right: 8px;
+}
+
+hr {
+    margin: 0px;
+    height: 1px;
+    background-color: #808080;
+    border: none;
+}
+
+.parameters-head {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+#mainbox {
+
 }
