@@ -25,60 +25,91 @@
                 Wavefunction Simulator
             </h1>
         </div>
-        <div class="flex-container flex-row flex-center">
-            <div class="flex-child" id="canvas-container" style="flex: 0 0 600px">
-                <canvas id="canvas"></canvas>
+        <div class="flex-container flex-column flex-center">
+            <div class="flex-container flex-row flex-center">
+                <div class="flex-child" id="canvas-container" style="flex: 0 0 600px">
+                    <canvas id="canvas"></canvas>
+                </div>
+                <div class="flex-child" id="parameters-outer">
+                    <div class="flex-container flex-column" id="parameters-inner">
+
+                        <div class="flex-child header parameters-div" id="parameters">
+                            <h2 class="parameters-head" id="parameters-header">Parameters</h2>
+                        </div>
+
+                        <hr>
+
+                        <div class="flex-child parameters-div" id="inputs">
+                            <h3 class="parameters-head">Inputs</h3>
+
+                            <div class="iblock">
+                                <label class="label">V: </label>
+                                <p class="inline"><span class="input" role="textbox" id="V" contenteditable>
+                                        x*x
+                                    </span></p>
+                            </div>
+
+                            <div class="iblock">
+                                <label class="label">Substeps: </label>
+                                <p class="inline"><span class="input" role="textbox" id="substeps" contenteditable>
+                                        300
+                                    </span></p>
+                            </div>
+
+                            <pre class="parameters-text" id="subrec">(substep rec: )</pre>
+
+                            <div class="center">
+                                <button id="update">Update</button>
+                            </div>
+
+                            <div class="iblock">
+                                <input type="checkbox" class="checkbox" id="paused" checked>
+                                <label class="label">Pause </label>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="flex-child parameters-div" id="outputs">
+                            <div class="parameter-group">
+                                <h3 class="parameters-head">States</h3>
+
+                                <pre class="parameters-text" id="t">t = </pre>
+
+                            </div>
+
+                            <hr>
+
+                            <div class="parameter-group">
+                                <h3 class="parameters-head">Computation Breakdown</h3>
+
+                                <pre class="parameters-text" id="t1">Normalization (ms):  </pre>
+
+
+                                <pre class="parameters-text" id="t2">Render time   (ms):  </pre>
+
+                            </div>
+
+                            <hr>
+
+                            <div class="parameter-group">
+                                <h3 class="parameters-head">Other</h3>
+
+                                <pre class="parameters-text" id="fps">FPS:  </pre>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="flex-child" id="parameters-outer">
-                <div class="flex-container flex-column" id="parameters-inner">
-
-                    <div class="flex-child header parameters-div" id="parameters">
-                        <h2 class="parameters-head" id="parameters-header">Parameters</h2>
-                    </div>
-
+            <div class="flex-child">
+                <div class="flex-container flex-column center" id="console">
+                    <h2>
+                        Console
+                    </h2>
                     <hr>
-
-                    <div class="flex-child parameters-div" id="inputs">
-                        <h3 class="parameters-head">Inputs</h3>
-                        <p class="parameters-text" id="V">V = 0</p>
-                        <p class="parameters-text" id="substeps">Substeps = 100</p>
-                        <p>
-                        <pre class="parameters-text" id="subrec">(reccomended substeps: )</pre>
-                        </p>
-                    </div>
-
-                    <hr>
-
-                    <div class="flex-child parameters-div" id="outputs">
-                        <div class="parameter-group">
-                            <h3 class="parameters-head">States</h3>
-                            <p>
-                            <pre class="parameters-text" id="t">t = </pre>
-                            </p>
-                        </div>
-
-                        <hr>
-
-                        <div class="parameter-group">
-                            <h3 class="parameters-head">Computation Breakdown</h3>
-                            <p>
-                            <pre class="parameters-text" id="t1">Normalization (ms):  </pre>
-                            </p>
-                            <p>
-                            <pre class="parameters-text" id="t2">Render time   (ms):  </pre>
-                            </p>
-                        </div>
-
-                        <hr>
-
-                        <div class="parameter-group">
-                            <h3 class="parameters-head">Other</h3>
-                            <p>
-                            <pre class="parameters-text" id="fps">FPS:  </pre>
-                            </p>
-                        </div>
-                    </div>
-
+                    <pre id="console-p"></pre>
                 </div>
             </div>
         </div>

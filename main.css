@@ -6,12 +6,16 @@ body {
     padding-right: 16px
 }
 
+.inline {
+    display: inline
+}
+
 .flex-container {
     display: flex
 }
 
 .flex-center {
-    justify-content: center;
+    justify-content: center
 }
 
 .flex-row {
@@ -31,7 +35,7 @@ body {
     width: 600px;
     height: 600px;
     margin-left: 8px;
-    margin-right: 8px;
+    margin-right: 8px
 }
 
 #canvas {
@@ -42,17 +46,18 @@ body {
     margin: 0;
     top: 0;
     left: 0;
-    border-radius: 16px
+    border-radius: 16px;
+    cursor: pointer
 }
 
 #title {
     width: 600px;
-    margin: auto;
+    margin: auto
 }
 
 #parameters-outer {
     margin-left: 8px;
-    margin-right: 8px;
+    margin-right: 8px
 }
 
 #parameters-inner {
@@ -61,30 +66,93 @@ body {
     padding-left: 16px;
     padding-right: 16px;
     min-height: 600px;
+    background-color: #303338;
+    padding-bottom: 8px;
+    min-width: 250px;
 }
 
 .header {
-    text-align: center;
+    text-align: center
 }
 
 .parameters-text {
-    margin: 8px;
-    margin-left: 32px;
-    margin-right: 8px;
+    margin: 8px 8px 8px 32px
 }
 
 hr {
-    margin: 0px;
+    margin: 0;
     height: 1px;
-    background-color: #808080;
-    border: none;
+    background-color: gray;
+    border: 0
 }
 
 .parameters-head {
     margin-left: 8px;
-    margin-right: 8px;
+    margin-right: 8px
 }
 
-#mainbox {
+#update,
+.input {
+    border-width: 2px
+}
 
+.input{
+    padding: 4px 8px;
+    border-color: #a0a0a0;
+    border-style: solid;
+    border-radius: 6px;
+    box-shadow: 0 0 4px 0#303030 inset;
+    background-color: #515151;
+    cursor: text;
+    word-wrap:break-word
+}
+
+.label {
+    margin-right: 2px
+}
+
+#update {
+    width: 100%;
+    color: #fff;
+    padding: 6px 22px;
+    margin-bottom: 12px;
+    background-color: rgba(81, 81, 81, .5)
+}
+
+.iblock {
+    padding: 8px;
+    width: 100%
+}
+
+.center {
+    margin: auto;
+    width: 100%
+}
+
+#console {
+    margin-top: 12px;
+    width: 866px;
+    border: 2px solid #a0a0a0;
+    border-radius: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    min-height: 200px;
+    background: #191a1c
+}
+
+#console-p {
+    text-align: left;
+    word-wrap:break-word
+}
+
+#t {
+    padding-bottom: 10px
+}
+
+#outputs .parameter-group .parameters-text {
+    padding-bottom: 0
+}
+
+#outputs hr {
+    margin-top: 14px
 }
