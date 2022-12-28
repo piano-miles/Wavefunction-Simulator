@@ -63,6 +63,7 @@ function draw() {
     const yscale = 600; // Scale values of wavefunction to fit
     const xscale = 1; //   Scale space
     const tscale = 1; //   Scale time
+    const Vscale = 5; //    Scale energy
 
     // Functions of the math library (for V input). See extract.py for extraction method.
     const maths = ['abs', 'acos', 'asin', 'atan', 'cbrt', 'ceil', 'cos', 'cosh', 'exp', 'floor', 'hypot', 'log', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc'];
@@ -82,9 +83,12 @@ function draw() {
 
     // Parameters
     let fps = 0;
-    let substeps = 400;
+    let substeps = 400; // substeps / frame
     let global_time = 0;
-    let dt = 0.01;
+    let dt = 0.001; // natural time / frame
+    let dtsc = dt / substeps; // natural time / substep
+    let dx = 0.02; // natural space / pixel
+    let dx2 = 1 / (dx * dx); // dx^-2
 
     let init = true;
     let V = []; // Potential
@@ -97,8 +101,12 @@ function draw() {
     // Accumulating computation time counters
     let t1acc = 0;
     let t2acc = 0;
+    let t3acc = 0;
     let frame = 0;
     let toacc = 0; // total
+
+    const range = Array.from(new Array(600), (x, i) => i);
+    const lrange = Array.from(new Array(598), (x, i) => i + 1);
 
     //
     // Function definitions
@@ -122,9 +130,9 @@ function draw() {
 
         ctx.strokeStyle = "#cc5050" + alpha;
         ctx.beginPath();
-        ctx.moveTo(0, 300 - V[0] * yscale);
+        ctx.moveTo(0, 300 - V[0] * Vscale);
         for (let i = 1; i < 600; i++) {
-            ctx.lineTo(i, 300 - V[i] * yscale);
+            ctx.lineTo(i, 300 - V[i] * Vscale);
         }
         ctx.stroke();
 
@@ -133,11 +141,12 @@ function draw() {
 
         pdfscale = 300 / Math.max.apply(null, v);
         ctx.beginPath();
-        ctx.moveTo(0, 300 - v[0] * pdfscale);
-        for (let i = 1; i < v.length; i++) {
+        ctx.moveTo(0, 300);
+        for (let i = 0; i < v.length; i++) {
             let y = 300 - v[i] * pdfscale;
             ctx.lineTo(i, y);
         }
+        ctx.lineTo(600, 300);
         ctx.stroke();
         ctx.closePath();
         ctx.fill();
@@ -172,8 +181,9 @@ function draw() {
         sqd.forEach(a =>
             RMS += a // Integrate <wfunc|wfunc>
         )
+        if (RMS <= 0) throw ('There is an issue with your wavefunction.');
         RMS = Math.sqrt(RMS); // Root
-        return wf_local.map(x => x.map(y => y / RMS)); // Normalise
+        return wf_local.map((t) => t.map(y => y / RMS)); // Normalise
     }
 
     function update_inputs() {
@@ -219,7 +229,7 @@ function draw() {
     function initialise() {
         for (let i = 0; i < 600; i++) {
             let j = (i - 300) * 0.01;
-            let amplitude = complex_exponential(j * 8, Math.exp(-j * j));
+            let amplitude = complex_exponential(j * 8, Math.exp(-j * j * 100));
             wfunc[i] = amplitude; // Complex number as [r, i]
             let sq = amplitude[0] * amplitude[0] + amplitude[1] * amplitude[1];
             wf2[i] = sq;
@@ -230,6 +240,31 @@ function draw() {
         update_inputs(false); // Load inputs and render on canvas
 
         console_out('To begin, uncheck the "pause" box.', 'white', 'set');
+    }
+
+    const laplacian = a => {
+        let L = lrange.map(
+            l => [(a[l - 1][0] + a[l + 1][0] - 2 * a[l][0]) * dx2,
+            (a[l - 1][1] + a[l + 1][1] - 2 * a[l][1]) * dx2]
+        );
+        L.unshift(L[0]), L.push(L[L.length - 1]);
+        return L;
+    }
+
+    function evolve(psi, pdf) {
+        l = laplacian(psi);
+        let K = l.map(C => [C[1] * -0.5, C[0] * 0.5]);
+        //console.log(K);
+        //console.log(psi);
+        //console.log(range);
+        P = range.map(i =>
+            [psi[i][1] * V[i],
+            -psi[i][0] * V[i]]
+        );
+        return range.map(i =>
+            [psi[i][0] + (K[i][0] + P[i][0]) * dtsc,
+            psi[i][1] + (K[i][1] + P[i][1]) * dtsc]
+        );
     }
 
     document.getElementById("update").addEventListener('click', event => {
@@ -246,7 +281,6 @@ function draw() {
     // Loop
     function update() {
         if (!paused.checked) {
-
             let times = [];
 
             // Clear screen
@@ -260,18 +294,25 @@ function draw() {
             wfunc = normalise(wfunc, wf2);
             times.push(performance.now());
 
+            // Evolve the wave function
+            for (let i = 0; i < substeps; i++) {
+                wfunc = evolve(wfunc, wf2);
+            }
+            times.push(performance.now());
+
             // Render the wave functions
             renderPath(wfunc, wf2);
             times.push(performance.now());
 
             // Times
             t1acc += (times[1] - times[0]);
-            t2acc += (times[2] - times[1]);
-            toacc += (times[2] - times[0]);
+            t1acc += (times[2] - times[1]);
+            t3acc += (times[3] - times[2]);
+            toacc += (times[3] - times[0]);
 
             if (frame % 60 == 0) {
                 t1.innerHTML = "Normalization (ms): " + (t1acc / 60).toFixed(2);
-                t2.innerHTML = "Render time   (ms): " + (t2acc / 60).toFixed(2);
+                t3.innerHTML = "Render time   (ms): " + (t3acc / 60).toFixed(2);
 
                 fps = 60000 / toacc;
                 fps_display.innerHTML = "FPS: " + fps.toFixed(1);
@@ -280,7 +321,7 @@ function draw() {
                 subrec_display.innerHTML = "(substep rec: " + subrec + ")";
 
                 t1acc = 0;
-                t2acc = 0;
+                t3acc = 0;
                 toacc = 0;
             }
 

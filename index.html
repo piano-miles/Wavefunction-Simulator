@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Miles Waugh">
     <meta name="keywords"
-        content="wave, function, wavefunction, simulator, evolution, schrodinger, schroedinger, schrödinger, github, miles, waugh, canvas">
+        content="quantum, wave, function, wavefunction, simulator, evolution, schrodinger, schroedinger, schrödinger, time-dependent, numeric, github, miles, waugh, canvas">
 </head>
 
 <body onload="setup();">
@@ -24,9 +24,14 @@
             <h1 class="header"> Wavefunction Simulator </h1>
         </div>
         <div class="flex-container flex-column flex-center">
-            <div class="flex-container flex-row flex-center">
-                <div class="flex-child" id="canvas-container" style="flex: 0 0 600px">
-                    <canvas id="canvas"></canvas>
+            <div class="flex-container flex-row flex-center" id="r1">
+                <div class="flex-container flex-column">
+                    <div class="flex-child" id="canvas-container" style="flex: 0 0 600px">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                    <div class="flex-child" id="canvas-xaxis">
+                        <p id="temporary-text">x-axis (incomplete)</p>
+                    </div>
                 </div>
                 <div class="flex-child" id="parameters-outer">
                     <div class="flex-container flex-column" id="parameters-inner">
@@ -43,7 +48,7 @@
                             <div class="iblock">
                                 <label class="label">V: </label>
                                 <p class="inline">
-                                    <span class="input" role="textbox" id="V" contenteditable> x*x/1e6 </span>
+                                    <span class="input" role="textbox" id="V" contenteditable> -x*x/1e3 </span>
                                 </p>
                             </div>
 
@@ -79,7 +84,7 @@
                             <div class="parameter-group">
                                 <h3 class="parameters-head">Computation Breakdown</h3>
                                 <pre class="parameters-text" id="t1">Normalization (ms): 0.0</pre>
-                                <pre class="parameters-text" id="t2">Render time   (ms): 0.0</pre>
+                                <pre class="parameters-text" id="t3">Render time   (ms): 0.0</pre>
                             </div>
 
                             <hr>
@@ -104,7 +109,7 @@
         </div>
     </div>
 
-    <script src="mini.js"></script>
+    <script src="main.js"></script>
 </body>
 
 </html>
