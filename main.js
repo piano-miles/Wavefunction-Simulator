@@ -1,26 +1,53 @@
+var console_out; // Make global
+
 function setup() {
     const canvas = document.getElementById("canvas");
     let console_output = document.getElementById("console-p");
+
+    console_out = function () {
+        let a = arguments;
+        if (a.length == 3 || a.length == 4 && a[3]) {
+            let value = a[0];
+            let type = a[1];
+            let action = a[2];
+
+            if (type == 'red') {
+                type = '#ed2f2f';
+            } else if (type == 'green') {
+                type = '#c4ffad';
+            } else if (type == 'white') {
+                type = '#ffffff';
+            }
+            console_output.style.color = type;
+
+            if (action == 'add') {
+                console_output.innerHTML += value;
+            } else {
+                console_output.innerHTML = value;
+            }
+        } else {
+            if (a[3]) throw "Incorrect number of arguments passed (" + a.length + ").";
+        };
+    }
 
     if (canvas.getContext) {
         canvas.width = 600;
         canvas.height = 600;
 
-        try {
-            draw();
-        } catch (error) {
+        //try {
+        draw();
+        /*} catch (error) {
             console_output.style.color = '#ed2f2f';
             console_output.innerHTML = "Uh oh. Looks like there's a problem with the code.\nPlease paste the following line(s) in a pull request:\n\n";
             console_output.innerHTML += "error message:  " + error.message + "\n";
             console_output.innerHTML += "error name:     " + error.name.message;
-        }
+        }*/
     } else {
         if (canvas.outerHTML) {
             try {
                 canvas.outerHTML = `<h1>There was an issue with canvas.</h1>`;
             } finally {
-                console_output.style.color = '#ed2f2f';
-                console_output.innerHTML = "Uh oh. Looks like there's a problem with canvas.";
+                console_out("Uh oh. Looks like there's a problem with canvas.", "red", "set")
             }
         }
     }
@@ -44,6 +71,7 @@ function draw() {
     let t1 = document.getElementById("t1");
     let t2 = document.getElementById("t2");
 
+    // HTML elements
     let V_display = document.getElementById("V");
     let time_display = document.getElementById("t");
     let fps_display = document.getElementById("fps");
@@ -52,9 +80,25 @@ function draw() {
     let paused = document.getElementById("paused");
     let console_output = document.getElementById("console-p");
 
+    // Parameters
+    let fps = 0;
+    let substeps = 400;
+    let global_time = 0;
+    let dt = 0.01;
+
     let init = true;
     let V = []; // Potential
-    let Vfunc = "x*x";
+    let Vfunc = '';
+
+    // Init
+    let wfunc = new Array(600).fill([0, 0]); //Wave function
+    let wf2 = new Array(600).fill(0); //Square density
+
+    // Accumulating computation time counters
+    let t1acc = 0;
+    let t2acc = 0;
+    let frame = 0;
+    let toacc = 0; // total
 
     //
     // Function definitions
@@ -119,22 +163,26 @@ function draw() {
         ctx.stroke();
     }
 
-    function sqa(wfunc) {
-        return wfunc.map(a => a[0] * a[0] + a[1] * a[1]);
+    function sqa(wf_local) {
+        return wf_local.map(a => a[0] * a[0] + a[1] * a[1]);
     }
 
-    function normalise(wfunc, sqd) {
+    function normalise(wf_local, sqd) {
         RMS = 0;
         sqd.forEach(a =>
             RMS += a // Integrate <wfunc|wfunc>
         )
         RMS = Math.sqrt(RMS); // Root
-        return wfunc.map(x => x.map(y => y / RMS)); // Normalise
+        return wf_local.map(x => x.map(y => y / RMS)); // Normalise
     }
 
-    document.getElementById("update").onclick = function () {
+    function update_inputs() {
+        console.log("updating inputs");
+
         let vin = V_display.innerHTML.trim();
         maths.forEach(e => vin.replace(e, 'Math.' + e));
+        success = false;
+
         try {
             for (let x = 0; x < 600; x++) {
                 let y = eval(vin);
@@ -143,58 +191,61 @@ function draw() {
 
             computePotential();
 
-            console_output.style.color = '#c4ffad';
-            console_output.innerHTML = "Successfully updated V to " + Vfunc + "\n";
+            console_out("Successfully updated V to " + Vfunc + "\n", "green", "set");
 
             let subin = substep_display.innerHTML.trim();
             try {
                 subin = Math.floor(subin) + 0;
                 if (subin > 0 && subin < Infinity) {
                     substeps = subin;
-                    console_output.style.color = '#c4ffad';
-                    console_output.innerHTML += "Successfully updated substeps to " + substeps;
+                    console_out("Successfully updated substeps to " + substeps, "green", "add");
+                    success = true;
                 } else {
-                    console_output.style.color = '#ed2f2f';
-                    console_output.innerHTML += "ERROR:\nUpdating substeps:\n" + "Invalid value.\nPlease make sure it is a positive non-zero int.";
+                    console_out("ERROR:\nUpdating substeps:\n" + "Invalid value.\nPlease make sure it is a positive non-zero int.", "red", "add");
                 }
             } catch (error) {
-                console_output.style.color = '#ed2f2f';
-                console_output.innerHTML += "ERROR:\nUpdating substeps:\n" + error;
+                console_out("ERROR:\nUpdating substeps:\n" + error, "red", "add");
             }
         } catch (error) {
-            console_output.style.color = '#ed2f2f';
-            console_output.innerHTML = "ERROR:\nUpdating potential:\n" + error;
+            console_out("ERROR:\nUpdating potential:\n" + error, "red", "set");
+        }
+
+        if (success) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            renderPath(wfunc, wf2);
         }
     }
+
+    function initialise() {
+        for (let i = 0; i < 600; i++) {
+            let j = (i - 300) * 0.01;
+            let amplitude = complex_exponential(j * 8, Math.exp(-j * j));
+            wfunc[i] = amplitude; // Complex number as [r, i]
+            let sq = amplitude[0] * amplitude[0] + amplitude[1] * amplitude[1];
+            wf2[i] = sq;
+        }
+
+        wf2 = sqa(wfunc); // Compute square density
+        wfunc = normalise(wfunc, wf2); // Normalise wavefunction
+        update_inputs(false); // Load inputs and render on canvas
+
+        console_out('To begin, uncheck the "pause" box.', 'white', 'set');
+    }
+
+    document.getElementById("update").addEventListener('click', event => {
+        update_inputs();
+    });
 
     //
     // Draw
     //
 
-    // Init
-    let wfunc = []; //Wave function
-    let wf2 = []; //Square density
-    for (let i = 0; i < 600; i++) {
-        let j = (i - 300) * 0.01;
-        let amplitude = complex_exponential(j * 8, Math.exp(-j * j));
-        wfunc.push(amplitude); // Complex number as [r, i]
-        let sq = amplitude[0] * amplitude[0] + amplitude[1] * amplitude[1];
-        wf2.push(sq);
-    }
-
-    // Accumulating computation time counters
-    let t1acc = 0;
-    let t2acc = 0;
-    let frame = 0;
-    let toacc = 0; // total
-    let fps = 0;
-    let substeps = 400;
-    let global_time = 0;
-    let dt = 0.01;
+    // Initialise wavefunction
+    initialise();
 
     // Loop
     function update() {
-        if (!paused.checked || init) {
+        if (!paused.checked) {
 
             let times = [];
 
@@ -239,12 +290,12 @@ function draw() {
             // Loop
             frame++;
             if (frame >= 240) frame = 0;
-            init = false;
         }
 
         requestAnimationFrame(update);
     }
 
     // Begin loop
+    init = false;
     update();
 }
