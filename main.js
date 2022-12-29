@@ -56,6 +56,8 @@ function setup() {
 function draw() {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
+    const width = 600;
+    const height = 600;
 
     ctx.globalCompositeOperation = "destination-over";
 
@@ -71,6 +73,7 @@ function draw() {
     // I/O
     let t1 = document.getElementById("t1");
     let t2 = document.getElementById("t2");
+    let t3 = document.getElementById("t3");
 
     // HTML elements
     let V_display = document.getElementById("V");
@@ -80,6 +83,7 @@ function draw() {
     let subrec_display = document.getElementById("subrec");
     let paused = document.getElementById("paused");
     let console_output = document.getElementById("console-p");
+    let width_display = document.getElementById("xscl");
 
     // Parameters
     let fps = 0;
@@ -221,8 +225,15 @@ function draw() {
         }
 
         if (success) {
+            // Render updated functions
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             renderPath(wfunc, wf2);
+
+            // Update linked parameters
+            dtsc = dt / substeps;
+            dx2 = 1 / (dx * dx); // dx^-2
+
+            width_display.innerHTML = "width = " + (dx * width * 0.3862).toFixed(3) + " pm";
         }
     }
 
@@ -237,6 +248,7 @@ function draw() {
 
         wf2 = sqa(wfunc); // Compute square density
         wfunc = normalise(wfunc, wf2); // Normalise wavefunction
+        wf2 = sqa(wfunc); // Reompute square density
         update_inputs(false); // Load inputs and render on canvas
 
         console_out('To begin, uncheck the "pause" box.', 'white', 'set');
@@ -254,9 +266,6 @@ function draw() {
     function evolve(psi, pdf) {
         l = laplacian(psi);
         let K = l.map(C => [C[1] * -0.5, C[0] * 0.5]);
-        //console.log(K);
-        //console.log(psi);
-        //console.log(range);
         P = range.map(i =>
             [psi[i][1] * V[i],
             -psi[i][0] * V[i]]
@@ -285,33 +294,33 @@ function draw() {
 
             // Clear screen
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            times.push(performance.now());
-
-            // Compute square density
-            wf2 = sqa(wfunc);
-
-            // Normalise the wave function
-            wfunc = normalise(wfunc, wf2);
-            times.push(performance.now());
+            times.push(performance.now()); // t0
 
             // Evolve the wave function
             for (let i = 0; i < substeps; i++) {
-                wfunc = evolve(wfunc, wf2);
+                wfunc = evolve(wfunc);
             }
-            times.push(performance.now());
+            times.push(performance.now()); // t1
+
+            // Compute square density
+            wf2 = sqa(wfunc);
+            // Normalise the wave function
+            wfunc = normalise(wfunc, wf2);
+            times.push(performance.now()); // t2
 
             // Render the wave functions
             renderPath(wfunc, wf2);
-            times.push(performance.now());
+            times.push(performance.now()); // t3
 
             // Times
-            t1acc += (times[1] - times[0]);
-            t1acc += (times[2] - times[1]);
-            t3acc += (times[3] - times[2]);
-            toacc += (times[3] - times[0]);
+            t1acc += (times[1] - times[0]); // Evolution
+            t1acc += (times[2] - times[1]); // Normalisation
+            t3acc += (times[3] - times[2]); // Render
+            toacc += (times[3] - times[0]); // Total
 
             if (frame % 60 == 0) {
-                t1.innerHTML = "Normalization (ms): " + (t1acc / 60).toFixed(2);
+                t1.innerHTML = "Evolution     (ms): " + (t1acc / 60).toFixed(2);
+                t2.innerHTML = "Normalization (ms): " + (t2acc / 60).toFixed(2);
                 t3.innerHTML = "Render time   (ms): " + (t3acc / 60).toFixed(2);
 
                 fps = 60000 / toacc;
@@ -321,12 +330,13 @@ function draw() {
                 subrec_display.innerHTML = "(substep rec: " + subrec + ")";
 
                 t1acc = 0;
+                t2acc = 0;
                 t3acc = 0;
                 toacc = 0;
             }
 
-            global_time += dt * substeps;
-            time_display.innerHTML = "t = " + (global_time * 0.001288).toFixed(3) + " attoseconds";
+            global_time += dt;
+            time_display.innerHTML = "t = " + (global_time * 1.288).toFixed(3) + " zeptoseconds";
 
             // Loop
             frame++;

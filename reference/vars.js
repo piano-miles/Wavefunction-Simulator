@@ -22,10 +22,10 @@ let console_output = document.getElementById("console-p");
 let fps = 0;
 let substeps = 400; // substeps / frame
 let global_time = 0;
-let dt = 0.01; // natural time / frame
+let dt = 0.001; // natural time / frame
 let dtsc = dt / substeps; // natural time / substep
-let dx = 0.01; // natural space / pixel
-let dx2 = dx * dx; // dx^2
+let dx = 0.02; // natural space / pixel
+let dx2 = 1 / (dx * dx); // dx^-2
 
 let init = true;
 let V = []; // Potential
@@ -38,5 +38,6 @@ let wf2 = new Array(600).fill(0); //Square density
 // Accumulating computation time counters
 let t1acc = 0;
 let t2acc = 0;
+let t3acc = 0;
 let frame = 0;
 let toacc = 0; // total
