@@ -71,9 +71,9 @@ function draw() {
     const maths = ['abs', 'acos', 'asin', 'atan', 'cbrt', 'ceil', 'cos', 'cosh', 'exp', 'floor', 'hypot', 'log', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc'];
 
     // I/O
-    let t1 = document.getElementById("t1");
-    let t2 = document.getElementById("t2");
-    let t3 = document.getElementById("t3");
+    let t1 = document.getElementById("t1"); // Evolution
+    let t2 = document.getElementById("t2"); // Render
+    let t3 = document.getElementById("t3"); // Other
 
     // HTML elements
     let V_display = document.getElementById("V");
@@ -87,7 +87,7 @@ function draw() {
 
     // Parameters
     let fps = 0;
-    let substeps = 400; // substeps / frame
+    let substeps = 80; // substeps / frame
     let global_time = 0;
     let dt = 0.001; // natural time / frame
     let dtsc = dt / substeps; // natural time / substep
@@ -110,6 +110,7 @@ function draw() {
     let t3acc = 0;
     let frame = 0;
     let toacc = 0; // total
+    let times = [];
 
     const range = Array.from(new Array(600), (x, i) => i);
     const lrange = Array.from(new Array(598), (x, i) => i + 1);
@@ -195,13 +196,13 @@ function draw() {
     function update_inputs() {
         console.log("updating inputs");
 
-        let vin = V_display.innerHTML.trim();
+        let vin = V_display.value.trim();
         maths.forEach(e => vin.replace(e, 'Math.' + e));
         success = false;
 
         try {
             for (let x = 0; x < 600; x++) {
-                let y = eval(vin);
+                let y = eval(vin) + 0;
             }
             Vfunc = vin;
 
@@ -244,7 +245,7 @@ function draw() {
     function initialise() {
         for (let i = 0; i < 600; i++) {
             let j = (i - 300) * 0.01;
-            let amplitude = complex_exponential(j * 8, Math.exp(-j * j * 100));
+            let amplitude = complex_exponential(j * 7, Math.exp(-j * j * 100));
             wfunc[i] = amplitude; // Complex number as [r, i]
             let sq = amplitude[0] * amplitude[0] + amplitude[1] * amplitude[1];
             wf2[i] = sq;
@@ -255,7 +256,7 @@ function draw() {
         wf2 = sqa(wfunc); // Reompute square density
         update_inputs(false); // Load inputs and render on canvas
 
-        console_out('To begin, uncheck the "pause" box.', 'white', 'set');
+        console_out('To begin, please uncheck the "pause" box.', 'white', 'set');
     }
 
     const laplacian = a => {
@@ -283,10 +284,16 @@ function draw() {
         let k3 = dydt(range.map(i => [psi[i][0] + k2[i][0] * dtsch, psi[i][1] + k2[i][1] * dtsch]));
         let k4 = dydt(range.map(i => [psi[i][0] + k3[i][0] * dtsc, psi[i][1] + k3[i][1] * dtsc]));
 
-        return range.map(i =>
+        let psi2 = range.map(i =>
             [psi[i][0] + (k1[i][0] + 2 * k2[i][0] + 2 * k3[i][0] + k4[i][0]) * dtscs,
             psi[i][1] + (k1[i][1] + 2 * k2[i][1] + 2 * k3[i][1] + k4[i][1]) * dtscs]
         );
+
+        // Prevent particle from sticking to walls
+        psi2[0] = [0, 0];
+        psi2[psi2.length - 1] = [0, 0];
+
+        return psi2;
     }
 
     document.getElementById("update").addEventListener('click', event => {
@@ -303,22 +310,24 @@ function draw() {
     // Loop
     function update() {
         if (!paused.checked) {
-            let times = [];
+            let temp = times[times.length - 1];
+            times = [];
+            times.push(temp); // t0
 
             // Clear screen
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            times.push(performance.now()); // t0
+            times.push(performance.now()); // t1
 
             // Evolve the wave function
             for (let i = 0; i < substeps; i++) {
                 wfunc = evolve(wfunc);
+                if (i % 5 == 0) {
+                    // Compute square density
+                    wf2 = sqa(wfunc);
+                    // Normalise the wave function
+                    wfunc = normalise(wfunc, wf2);
+                }
             }
-            times.push(performance.now()); // t1
-
-            // Compute square density
-            wf2 = sqa(wfunc);
-            // Normalise the wave function
-            wfunc = normalise(wfunc, wf2);
             times.push(performance.now()); // t2
 
             // Render the wave functions
@@ -326,15 +335,16 @@ function draw() {
             times.push(performance.now()); // t3
 
             // Times
-            t1acc += (times[1] - times[0]); // Evolution
-            t1acc += (times[2] - times[1]); // Normalisation
-            t3acc += (times[3] - times[2]); // Render
-            toacc += (times[3] - times[0]); // Total
+            t3acc += (times[1] - times[0]); // Other
+            t1acc += (times[2] - times[1]); // Evolution
+            t2acc += (times[3] - times[2]); // Render
+            toacc += (times[3] - times[1]); // Total - other
 
             if (frame % 60 == 0) {
-                t1.innerHTML = "Evolution     (ms): " + (t1acc / 60).toFixed(2);
-                t2.innerHTML = "Normalization (ms): " + (t2acc / 60).toFixed(2);
-                t3.innerHTML = "Render time   (ms): " + (t3acc / 60).toFixed(2);
+                let tot = t1acc + t2acc + t3acc;
+                t1.innerHTML = `Evolution (ms): ${(t1acc / 60).toFixed(2)} (${Math.round(100 * t1acc / tot)}%)`;
+                t2.innerHTML = `Render    (ms): ${(t2acc / 60).toFixed(2)} (${Math.round(100 * t2acc / tot)}%)`;
+                t3.innerHTML = `Other     (ms): ${(t3acc / 60).toFixed(2)} (${Math.round(100 * t3acc / tot)}%)`;
 
                 fps = 60000 / toacc;
                 fps_display.innerHTML = "FPS: " + fps.toFixed(1);
@@ -349,7 +359,7 @@ function draw() {
             }
 
             global_time += dt;
-            time_display.innerHTML = "t = " + (global_time * 1.288).toFixed(3) + " zeptoseconds";
+            time_display.innerHTML = "t     = " + (global_time * 1.288).toPrecision(4) + " zs";
 
             // Loop
             frame++;

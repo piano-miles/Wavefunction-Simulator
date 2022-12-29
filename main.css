@@ -3,7 +3,10 @@ body {
     background-color: #3f424a;
     color: #fff;
     padding-left: 16px;
-    padding-right: 16px
+    padding-right: 16px;
+    zoom: .9;
+    -moz-transform: scale(.9);
+    -moz-transform-origin: 0 0
 }
 
 .inline {
@@ -95,9 +98,16 @@ hr {
 
 #update {
     border-width: 2px;
+    cursor: pointer;
+    width: 100%;
+    color: #fff;
+    padding: 6px 22px;
+    margin-bottom: 12px;
+    background-color: rgba(81, 81, 81, .5)
 }
 
 .input {
+    color: #fff;
     padding: 6px 8px;
     border-color: #a0a0a0;
     border-style: solid;
@@ -111,20 +121,12 @@ hr {
 }
 
 .input:focus {
-    color: rgb(187, 255, 141);
+    color: #bbff8d;
     font-weight: 900
 }
 
 .label {
     margin-right: 2px
-}
-
-#update {
-    width: 100%;
-    color: #fff;
-    padding: 6px 22px;
-    margin-bottom: 12px;
-    background-color: rgba(81, 81, 81, .5)
 }
 
 .iblock {
@@ -166,7 +168,7 @@ hr {
 }
 
 #r1 {
-    height: fit-content !important;
+    height: fit-content !important
 }
 
 #canvas-xaxis {
@@ -179,101 +181,124 @@ hr {
     margin-bottom: -8px;
     display: flex;
     flex: 0 1 auto;
-    align-self: flex-end;
+    align-self: flex-end
 }
 
 #temporary-text {
-    margin: auto;
+    margin: auto
 }
 
 .tooltip {
-    border-bottom: 2px dotted rgba(184, 184, 184, 0.153);
+    border-bottom: 2px dotted rgba(184, 184, 184, .153)
 }
 
+.tooltip .computation-tooltip,
 .tooltip .states-tooltip {
     opacity: 0;
     visibility: hidden;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, .5);
     width: auto;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
     position: absolute;
     margin-left: 200px;
     margin-top: -50px;
     z-index: 1;
-
-    padding-left: 16px;
-    padding-right: 16px;
-    transition-duration: 0.2s;
+    padding: 5px 16px;
+    transition-duration: .2s
 }
 
+.tooltip:hover .computation-tooltip,
 .tooltip:hover .states-tooltip {
     margin-left: 170px;
     opacity: 1;
     visibility: visible;
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px)
 }
 
+.tooltip .computation-tooltip::after,
 .tooltip .states-tooltip::after {
     content: " ";
     position: absolute;
     top: 35px;
     right: 100%;
-    /* To the left of the tooltip */
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent rgba(0, 0, 0, 0.5) transparent transparent;
+    border-color: transparent rgba(0, 0, 0, .5) transparent transparent
 }
 
 .tooltip .computation-tooltip {
-    opacity: 0;
-    visibility: hidden;
-    background-color: rgba(0, 0, 0, 0.5);
-    width: auto;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    margin-left: 200px;
-    margin-top: -60px;
-    z-index: 1;
-
-    padding-left: 16px;
-    padding-right: 16px;
-    transition-duration: 0.2s;
+    margin-top: -60px
 }
 
 .tooltip:hover .computation-tooltip {
-    margin-left: 225px;
-    opacity: 1;
-    visibility: visible;
-    backdrop-filter: blur(3px);
+    margin-left: 250px
 }
 
 .tooltip .computation-tooltip::after {
-    content: " ";
-    position: absolute;
-    top: 45px;
-    right: 100%;
-    /* To the left of the tooltip */
-    margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent rgba(0, 0, 0, 0.5) transparent transparent;
+    top: 45px
 }
 
-.states-tooltip p{
-    font-size:12px;
+.computation-tooltip p,
+.states-tooltip p {
+    font-size: 12px
 }
 
-.computation-tooltip p{
-    font-size:12px;
+#V {
+    width: 200px;
+    margin-left: 4px
+}
+
+#Vlabel {
+    float: left
+}
+
+#potential::after,
+#substep-tip::after {
+    top: 20px
+}
+
+#FPS {
+    margin-left: 120px
+}
+
+#substeps {
+    position: relative;
+    left: 76px;
+    top: -18px
+}
+
+#substep-tip {
+    margin-left: 125px
+}
+
+.reset-cursor {
+    cursor: default
+}
+
+#src {
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    vertical-align: middle;
+    line-height: 45px;
+    transition-duration: .4s
+}
+
+#src:hover {
+    color: #2daceb
+}
+
+#subrec {
+    margin-top: -15px
+}
+
+#paused {
+    cursor: pointer
+}
+
+#outputs .tooltip .parameters-text {
+    margin-left: 24px
 }
