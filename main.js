@@ -91,6 +91,8 @@ function draw() {
     let global_time = 0;
     let dt = 0.001; // natural time / frame
     let dtsc = dt / substeps; // natural time / substep
+    let dtsch = dtsc * 0.5;
+    let dtscs = dtsc / 6;
     let dx = 0.02; // natural space / pixel
     let dx2 = 1 / (dx * dx); // dx^-2
 
@@ -230,7 +232,9 @@ function draw() {
             renderPath(wfunc, wf2);
 
             // Update linked parameters
-            dtsc = dt / substeps;
+            dtsc = dt / substeps; // natural time / substep
+            dtsch = dtsc * 0.5;
+            dtscs = dtsc / 6;
             dx2 = 1 / (dx * dx); // dx^-2
 
             width_display.innerHTML = "width = " + (dx * width * 0.3862).toFixed(3) + " pm";
@@ -263,16 +267,25 @@ function draw() {
         return L;
     }
 
-    function evolve(psi, pdf) {
+    function dydt(psi) { // Partial derviative of wavefunction with respect to time
         l = laplacian(psi);
-        let K = l.map(C => [C[1] * -0.5, C[0] * 0.5]);
-        P = range.map(i =>
-            [psi[i][1] * V[i],
-            -psi[i][0] * V[i]]
+        let K = l.map(C => [C[1] * -0.5, C[0] * 0.5]); // Kenetic component
+        let H = range.map(i =>
+            [(psi[i][1] * V[i]) + K[i][0],
+            -psi[i][0] * V[i] + K[i][1]]
         );
+        return H;
+    }
+
+    function evolve(psi) {
+        let k1 = dydt(psi);
+        let k2 = dydt(range.map(i => [psi[i][0] + k1[i][0] * dtsch, psi[i][1] + k1[i][1] * dtsch]));
+        let k3 = dydt(range.map(i => [psi[i][0] + k2[i][0] * dtsch, psi[i][1] + k2[i][1] * dtsch]));
+        let k4 = dydt(range.map(i => [psi[i][0] + k3[i][0] * dtsc, psi[i][1] + k3[i][1] * dtsc]));
+
         return range.map(i =>
-            [psi[i][0] + (K[i][0] + P[i][0]) * dtsc,
-            psi[i][1] + (K[i][1] + P[i][1]) * dtsc]
+            [psi[i][0] + (k1[i][0] + 2 * k2[i][0] + 2 * k3[i][0] + k4[i][0]) * dtscs,
+            psi[i][1] + (k1[i][1] + 2 * k2[i][1] + 2 * k3[i][1] + k4[i][1]) * dtscs]
         );
     }
 
