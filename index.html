@@ -78,21 +78,45 @@
                                 <h3 class="parameters-head">States</h3>
                                 <div class="tooltip">
                                     <pre class="parameters-text" id="t">t     = 0.000 zs</pre>
-                                    <div class="tooltiptext">
+                                    <div class="states-tooltip">
                                         <p>The global time passed since initialization.</p>
-                                        <p>zs = zeptoseconds</p>
+                                        <p>(zs = zeptoseconds)</p>
                                     </div>
                                 </div>
-                                <pre class="parameters-text" id="xscl">width = 4.634 pm</pre>
+                                <div class="tooltip">
+                                    <pre class="parameters-text" id="xscl">width = 4.634 pm</pre>
+                                    <div class="states-tooltip">
+                                        <p>The width of the viewport window.</p>
+                                        <p>(pm = picometers)</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <hr>
 
                             <div class="parameter-group">
                                 <h3 class="parameters-head">Computation Breakdown</h3>
-                                <pre class="parameters-text" id="t1">Evolution     (ms): 0.0</pre>
-                                <pre class="parameters-text" id="t2">Normalization (ms): 0.0</pre>
-                                <pre class="parameters-text" id="t3">Render        (ms): 0.0</pre>
+                                <div class="tooltip">
+                                    <pre class="parameters-text" id="t1">Evolution     (ms): 0.0</pre>
+                                    <div class="computation-tooltip">
+                                        <p>Time spent evolving the wavefunction.</p>
+                                        <p>(1-second average per frame, in milliseconds)</p>
+                                    </div>
+                                </div>
+                                <div class="tooltip">
+                                    <pre class="parameters-text" id="t2">Normalization (ms): 0.0</pre>
+                                    <div class="computation-tooltip">
+                                        <p>Time spent normalizing the wavefunction.</p>
+                                        <p>(1-second average per frame, in milliseconds)</p>
+                                    </div>
+                                </div>
+                                <div class="tooltip">
+                                    <pre class="parameters-text" id="t3">Render        (ms): 0.0</pre>
+                                    <div class="computation-tooltip">
+                                        <p>Time spent rendering the components on the viewport.</p>
+                                        <p>(1-second average per frame, in milliseconds)</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <hr>

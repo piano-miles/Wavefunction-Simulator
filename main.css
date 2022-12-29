@@ -187,13 +187,54 @@ hr {
 }
 
 .tooltip {
-    border-bottom: 1px dashed rgb(184, 184, 184);
+    border-bottom: 2px dotted rgba(184, 184, 184, 0.153);
 }
 
-.tooltip .tooltiptext {
+.tooltip .states-tooltip {
+    opacity: 0;
     visibility: hidden;
-    width: auto;
     background-color: rgba(0, 0, 0, 0.5);
+    width: auto;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    margin-left: 200px;
+    margin-top: -50px;
+    z-index: 1;
+
+    padding-left: 16px;
+    padding-right: 16px;
+    transition-duration: 0.2s;
+}
+
+.tooltip:hover .states-tooltip {
+    margin-left: 170px;
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(3px);
+}
+
+.tooltip .states-tooltip::after {
+    content: " ";
+    position: absolute;
+    top: 35px;
+    right: 100%;
+    /* To the left of the tooltip */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent rgba(0, 0, 0, 0.5) transparent transparent;
+}
+
+.tooltip .computation-tooltip {
+    opacity: 0;
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: auto;
     color: #fff;
     text-align: center;
     border-radius: 6px;
@@ -210,20 +251,29 @@ hr {
     transition-duration: 0.2s;
 }
 
-.tooltip:hover .tooltiptext {
-    margin-left: 170px;
+.tooltip:hover .computation-tooltip {
+    margin-left: 225px;
+    opacity: 1;
     visibility: visible;
     backdrop-filter: blur(3px);
 }
 
-.tooltip .tooltiptext::after {
+.tooltip .computation-tooltip::after {
     content: " ";
     position: absolute;
-    top: 50%;
+    top: 45px;
     right: 100%;
     /* To the left of the tooltip */
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
     border-color: transparent rgba(0, 0, 0, 0.5) transparent transparent;
+}
+
+.states-tooltip p{
+    font-size:12px;
+}
+
+.computation-tooltip p{
+    font-size:12px;
 }
