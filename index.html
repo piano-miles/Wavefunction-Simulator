@@ -51,7 +51,10 @@
                                 <div class="tooltip">
                                     <textarea type="text" class="input" id="V">x*x/2e2</textarea>
                                     <div class="computation-tooltip" id="potential">
-                                        <p>The potential.</p>
+                                        <p>
+                                            This is the <a href="https://en.wikipedia.org/wiki/Potential_energy"
+                                                style="color:rgb(107, 197, 245)" target="_blank">potential</a>.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -72,9 +75,23 @@
                             <div class="center">
                                 <button id="update">Update</button>
                             </div>
-                            <div class="iblock reset-cursor">
-                                <input type="checkbox" class="checkbox" id="paused" checked="">
-                                <label class="label">Pause </label>
+                            <div id="front">
+                                <div class="iblock reset-cursor" id="checkdiv">
+                                    <input type="checkbox" class="checkbox" id="paused" onchange="resolve(this);"
+                                        checked="">
+                                    <label class="label">Pause </label>
+                                </div>
+                                <button id="start" onclick="resolve(this)">
+                                    <p>
+                                        To begin, uncheck this 'pause' box. Click this message to hide it.
+                                    </p>
+                                    <p style="margin-top: 12px">
+                                        You may hover over various parameters for more elaboration on what they mean.
+                                    </p>
+                                </button>
+                            </div>
+                            <div id="blurry">
+
                             </div>
 
                         </div>
@@ -157,6 +174,7 @@
     </div>
 
     <script src="index.js"></script>
+    <script src="resolve.js"></script>
 </body>
 
 </html>

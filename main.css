@@ -203,30 +203,39 @@ hr {
     border-radius: 6px;
     position: absolute;
     margin-left: 200px;
-    margin-top: -50px;
     z-index: 1;
     padding: 5px 16px;
     transition-duration: .2s
 }
 
+.tooltip .states-tooltip {
+    margin-top: -50px
+}
+
 .tooltip:hover .computation-tooltip,
 .tooltip:hover .states-tooltip {
-    margin-left: 170px;
     opacity: 1;
     visibility: visible;
     backdrop-filter: blur(3px)
+}
+
+.tooltip:hover .states-tooltip {
+    margin-left: 170px
 }
 
 .tooltip .computation-tooltip::after,
 .tooltip .states-tooltip::after {
     content: " ";
     position: absolute;
-    top: 35px;
     right: 100%;
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
     border-color: transparent rgba(0, 0, 0, .5) transparent transparent
+}
+
+.tooltip .states-tooltip::after {
+    top: 35px
 }
 
 .tooltip .computation-tooltip {
@@ -295,10 +304,48 @@ hr {
     margin-top: -15px
 }
 
-#paused {
+#paused,
+#start {
     cursor: pointer
 }
 
 #outputs .tooltip .parameters-text {
     margin-left: 24px
+}
+
+#start {
+    position: relative;
+    width: 300px;
+    background-color: rgba(246, 37, 37, .62);
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 2px solid #a0a0a0;
+    box-shadow: 0 0 11px 0#370437
+}
+
+#start p {
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    transition-duration: .5s
+}
+
+#start:active {
+    background-color: rgba(135, 5, 5, .62)
+}
+
+#blurry {
+    width: 100%;
+    height: 150%;
+    backdrop-filter: blur(4px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-image: linear-gradient(to right, rgba(10, 41, 66, .4)0, rgba(133, 113, 146, .33) 33%, rgba(137, 31, 57, .41) 100%)
+}
+
+#front {
+    z-index: 3;
+    position: relative
 }
