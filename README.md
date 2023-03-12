@@ -1,6 +1,6 @@
 # Wavefunction Simulator
 
-## A quantum wave function evolution simulator
+**A quantum wave function evolution simulator**.
 
 ***Run it on the web [here](https://piano-miles.github.io/Wavefunction-Simulator/).***
 
