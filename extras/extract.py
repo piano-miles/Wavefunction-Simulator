@@ -4,15 +4,10 @@ import os
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-B = open('./math.txt', 'r')
-str = B.read()
-B.close()
-
+with open('./math.txt', 'r') as B:
+    str = B.read()
 str = str.replace('<td><a href="javascript-math-', 'START1').replace('>', 'START2').replace('<', 'END').split('START1')
 
-A = []
-for C in str:
-    A.append(C.split('START2')[1].split('END')[0])
-
+A = [C.split('START2')[1].split('END')[0] for C in str]
 A.pop(0)
 print(A)
