@@ -1,4 +1,4 @@
-# Just a little Python script to extract the javascript math functions from a table on a website.
+# Python script to extract the javascript math functions from a table on a website.
 
 import os
 
