@@ -164,7 +164,7 @@ var setup, draw, console_out;
           for (let t = 0; t < substeps; t++) wfunc = evolve(wfunc), t % 5 == 0 && (wf2 = sqa(wfunc), wfunc = normalise(wfunc, wf2));
           if (times.push(performance.now()), renderPath(wfunc, wf2), times.push(performance.now()), t3acc += times[1] - times[0], t1acc += times[2] - times[1], t2acc += times[3] - times[2], toacc += times[3] - times[1], frame % 60 == 0) {
             let t = t1acc + t2acc + t3acc;
-            t1.innerHTML = `Evolution (ms): ${(t1acc / 60).toFixed(2)} (${Math.round(100 * t1acc / t)}%)`, t2.innerHTML = `Render    (ms): ${(t2acc / 60).toFixed(2)} (${Math.round(100 * t2acc / t)}%)`, t3.innerHTML = `Other     (ms): ${(t3acc / 60).toFixed(2)} (${Math.round(100 * t3acc / t)}%)`, fps = 6e4 / toacc, fps_display.innerHTML = "FPS: " + fps.toFixed(1), subrec = 10 * Math.round(substeps * fps / 400), subrec_display.innerHTML = "(substep rec: " + subrec + ")", t1acc = 0, t2acc = 0, t3acc = 0, toacc = 0
+            t1.innerHTML = `Evolution (ms): ${(t1acc / 60).toFixed(2)} (${~~(100 * t1acc / t)}%)`, t2.innerHTML = `Render    (ms): ${(t2acc / 60).toFixed(2)} (${~~(100 * t2acc / t)}%)`, t3.innerHTML = `Other     (ms): ${(t3acc / 60).toFixed(2)} (${~~(100 * t3acc / t)}%)`, fps = 6e4 / toacc, fps_display.innerHTML = "FPS: " + fps.toFixed(1), subrec = 10 * ~~(substeps * fps / 400), subrec_display.innerHTML = "(substep rec: " + subrec + ")", t1acc = 0, t2acc = 0, t3acc = 0, toacc = 0
           }
           global_time += dt, time_display.innerHTML = "t     = " + (1.288 * global_time)
             .toPrecision(4) + " zs", frame++, frame >= 240 && (frame = 0)
