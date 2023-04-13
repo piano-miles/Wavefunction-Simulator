@@ -5,7 +5,7 @@ var setup, draw, console_out;
       const t = document.getElementById("canvas");
       let e = document.getElementById("console-p");
       if (console_out = function () {
-        let t = arguments;
+        const t = arguments;
         if (3 == t.length || 4 == t.length && t[3]) {
           let n = t[0],
             s = t[1],
@@ -19,6 +19,7 @@ var setup, draw, console_out;
           console_out("Uh oh. Looks like there's a problem with canvas.", "red", "set")
         }
     },
+
     _3 = function () {
       const canvas = document.getElementById("canvas"),
         ctx = canvas.getContext("2d"),
@@ -39,7 +40,6 @@ var setup, draw, console_out;
         substep_display = document.getElementById("substeps"),
         subrec_display = document.getElementById("subrec"),
         paused = document.getElementById("paused"),
-        console_output = document.getElementById("console-p"),
         width_display = document.getElementById("xscl"),
         fps = 0,
         substeps = 80,
@@ -53,10 +53,8 @@ var setup, draw, console_out;
         init = !0,
         V = [],
         Vfunc = "",
-        wfunc = new Array(600)
-          .fill([0, 0]),
-        wf2 = new Array(600)
-          .fill(0),
+        wfunc = new Array(600).fill([0, 0]),
+        wf2 = new Array(600).fill(0),
         t1acc = 0,
         t2acc = 0,
         t3acc = 0,
@@ -71,9 +69,7 @@ var setup, draw, console_out;
         for (let x = -300; x < 300; x++) V.push(eval(Vfunc))
       }
 
-      function complex_exponential(t, e) {
-        return [Math.cos(t) * e, Math.sin(t) * e]
-      }
+      const complex_exponential = (t, e) => [Math.cos(t) * e, Math.sin(t) * e]
 
       function renderPath(t, e) {
         ctx.lineWidth = 2, ctx.strokeStyle = "#cc5050d0", ctx.beginPath(), ctx.moveTo(0, 300 - V[0] * Vscale);
@@ -96,9 +92,7 @@ var setup, draw, console_out;
         ctx.stroke()
       }
 
-      function sqa(t) {
-        return t.map((t => t[0] * t[0] + t[1] * t[1]))
-      }
+      const sqa = _ => _.map(t => t[0] * t[0] + t[1] * t[1])
 
       function normalise(t, e) {
         if (RMS = 0, e.forEach((t => RMS += t)), RMS <= 0) throw "There is an issue with your wavefunction.";
@@ -123,8 +117,7 @@ var setup, draw, console_out;
         } catch (t) {
           console_out("ERROR:\nUpdating potential:\n" + t, "red", "set")
         }
-        success && (ctx.clearRect(0, 0, canvas.width, canvas.height), renderPath(wfunc, wf2), dtsc = dt / substeps, dtsch = .5 * dtsc, dtscs = dtsc / 6, dx2 = 1 / (dx * dx), width_display.innerHTML = "width = " + (dx * width * .3862)
-          .toFixed(3) + " pm")
+        success && (ctx.clearRect(0, 0, canvas.width, canvas.height), renderPath(wfunc, wf2), dtsc = dt / substeps, dtsch = .5 * dtsc, dtscs = dtsc / 6, dx2 = 1 / (dx * dx), width_display.innerHTML = "width = " + (dx * width * .3862).toFixed(3) + " pm")
       }
 
       function initialise() {
@@ -137,6 +130,7 @@ var setup, draw, console_out;
         }
         wf2 = sqa(wfunc), wfunc = normalise(wfunc, wf2), wf2 = sqa(wfunc), update_inputs(!1), console_out('To begin, please uncheck the "pause" box.', "white", "set")
       }
+
       const laplacian = t => {
         let e = lrange.map((e => [(t[e - 1][0] + t[e + 1][0] - 2 * t[e][0]) * dx2, (t[e - 1][1] + t[e + 1][1] - 2 * t[e][1]) * dx2]));
         return e.unshift(e[0]), e.push(e[e.length - 1]), e
@@ -166,16 +160,13 @@ var setup, draw, console_out;
             let t = t1acc + t2acc + t3acc;
             t1.innerHTML = `Evolution (ms): ${(t1acc / 60).toFixed(2)} (${~~(100 * t1acc / t)}%)`, t2.innerHTML = `Render    (ms): ${(t2acc / 60).toFixed(2)} (${~~(100 * t2acc / t)}%)`, t3.innerHTML = `Other     (ms): ${(t3acc / 60).toFixed(2)} (${~~(100 * t3acc / t)}%)`, fps = 6e4 / toacc, fps_display.innerHTML = "FPS: " + fps.toFixed(1), subrec = 10 * ~~(substeps * fps / 400), subrec_display.innerHTML = "(substep rec: " + subrec + ")", t1acc = 0, t2acc = 0, t3acc = 0, toacc = 0
           }
-          global_time += dt, time_display.innerHTML = "t     = " + (1.288 * global_time)
-            .toPrecision(4) + " zs", frame++, frame >= 240 && (frame = 0)
+          global_time += dt, time_display.innerHTML = "t     = " + (1.288 * global_time).toPrecision(4) + " zs", frame++, frame >= 240 && (frame = 0)
         }
         requestAnimationFrame(update)
       }
-      document.getElementById("update")
-        .addEventListener("click", (t => {
-          update_inputs()
-        })), initialise(), init = !1, update()
+      document.getElementById("update").addEventListener("click", (t => {
+        update_inputs()
+      })), initialise(), init = !1, update()
     };
   _$0.setup = _2, _$0.draw = _3
-})
-  .call(this);
+}).call(this);

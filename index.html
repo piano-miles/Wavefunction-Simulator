@@ -1,36 +1,38 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <title>Wavefunction Simulator</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="main.css">
-    <link rel="icon" type="image/x-icon" href="/img/icon.ico">
+    <link href="main.css" rel="stylesheet">
+    <link href="/img/icon.ico" rel="icon" type="image/x-icon">
 
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Miles Waugh">
-    <meta name="keywords"
-        content="quantum, wave, function, wavefunction, simulator, evolution, schrodinger, schroedinger, schrödinger, time-dependent, numeric, github, miles, waugh, canvas">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="Miles Waugh" name="author">
+
+    <meta
+        content="quantum, wave, function, wavefunction, simulator, evolution, schrodinger, schroedinger, schrödinger, time-dependent, numeric, github, miles, waugh, canvas"
+        name="keywords">
 </head>
 
 <body onload="setup()">
     <div id="mainbox">
         <div id="title">
-            <h1 class="header reset-cursor"> Wavefunction Simulator </h1>
+            <h1 class="header reset-cursor">Wavefunction Simulator</h1>
         </div>
         <div class="flex-container flex-column flex-center">
             <div class="flex-container flex-row flex-center" id="r1">
                 <div class="flex-container flex-column">
-                    <div class="flex-child" id="canvas-container" style="flex:0 0 600px">
-                        <canvas id="canvas" width="600" height="600"></canvas>
+                    <div class="flex" id="canvas-container">
+                        <canvas height="600" id="canvas" width="600"></canvas>
                     </div>
                     <div class="flex-child" id="canvas-xaxis">
-                        <a id="src" href="https://github.com/piano-miles/Wavefunction-Simulator">View the code on
+                        <a href="https://github.com/piano-miles/Wavefunction-Simulator" id="src">View the code on
                             GitHub</a>
                     </div>
                 </div>
@@ -47,22 +49,22 @@
                             <h3 class="parameters-head reset-cursor">Inputs</h3>
 
                             <div class="iblock">
-                                <label class="label" id="Vlabel">V: </label>
+                                <label class="label" id="Vlabel">V:</label>
                                 <div class="tooltip">
-                                    <textarea type="text" class="input" id="V">x*x/2e2</textarea>
+                                    <textarea class="input" id="V" name="V" title="V" type="text">x*x/2e2</textarea>
                                     <div class="computation-tooltip" id="potential">
-                                        <p>
-                                            This is the <a href="https://en.wikipedia.org/wiki/Potential_energy"
-                                                style="color:rgb(107, 197, 245)" target="_blank">potential</a>.
-                                        </p>
+                                        <p class="link">This is the <a
+                                                href="https://en.wikipedia.org/wiki/Potential_energy" rel="noopener"
+                                                target="_blank">potential</a>.</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="iblock">
-                                <label class="label reset-cursor">Substeps: </label>
+                                <label class="label reset-cursor">Substeps:</label>
                                 <div class="tooltip">
-                                    <span class="input" role="textbox" id="substeps" contenteditable=""> 80 </span>
+                                    <span class="input" contenteditable="" id="substeps" role="textbox"
+                                        title="substeps">80</span>
                                     <div class="states-tooltip" id="substep-tip">
                                         <p>The number of evolution gradations within a frame.</p>
                                         <p>Normalization is performed every five steps.</p>
@@ -77,23 +79,15 @@
                             </div>
                             <div id="front">
                                 <div class="iblock reset-cursor" id="checkdiv">
-                                    <input type="checkbox" class="checkbox" id="paused" onchange="resolve(this);"
-                                        checked="">
-                                    <label class="label">Pause </label>
-                                </div>
-                                <button id="start" onclick="resolve(this)">
-                                    <p>
-                                        To begin, uncheck this 'pause' box. Click this message to hide it.
-                                    </p>
-                                    <p style="margin-top: 12px">
-                                        You may hover over various parameters for more elaboration on what they mean.
-                                    </p>
+                                    <input checked class="checkbox" id="paused" onchange="resolve(this);" title="paused"
+                                        type="checkbox"> <label class="label">Pause</label>
+                                </div><button id="start" onclick="resolve(this)">
+                                    <p>To begin, uncheck this 'pause' box. Click this message to hide it.</p>
+                                    <p id="info">You may hover over various parameters for more elaboration on what they
+                                        mean.</p>
                                 </button>
                             </div>
-                            <div id="blurry">
-
-                            </div>
-
+                            <div id="blurry"></div>
                         </div>
 
                         <hr>
@@ -164,10 +158,9 @@
             </div>
             <div class="flex-child">
                 <div class="flex-container flex-column center" id="console">
-                    <h2 class="reset-cursor"> Console </h2>
+                    <h2 class="reset-cursor">Console</h2>
                     <hr>
-                    <pre id="console-p" contenteditable=""
-                        style="color: rgb(255, 255, 255);">To begin, please uncheck the "pause" box.</pre>
+                    <pre contenteditable="" id="console-p">To begin, please uncheck the "pause" box.</pre>
                 </div>
             </div>
         </div>

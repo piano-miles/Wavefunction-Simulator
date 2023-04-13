@@ -1,5 +1,7 @@
-.vscode
-math.txt
-.DS_Store
 my-app/node_modules
+math.txt
 my-app/package-lock.json
+.vscode
+.DS_Store
+.hintrc
+.env
